@@ -1,0 +1,40 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: center;
+  max-width: 900px;
+  width: 100%;
+}
+
+.facultyScore {
+  width: 100%;
+  font-weight: 600;
+  color: #4096ff;
+}
+
+.table {
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+  width: 100%;
+  -webkit-box-shadow: 0px 4px 8px 0px rgba(34, 60, 80, 0.2);
+  -moz-box-shadow: 0px 4px 8px 0px rgba(34, 60, 80, 0.2);
+  box-shadow: 0px 4px 8px 0px rgba(34, 60, 80, 0.2);
+}
+
+.facultyPos {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.topOne {
+  font-weight: 600;
+  color: #4096ff;
+}
+
+.card {
+  width: 100%;
+  -webkit-box-shadow: 0px 4px 8px 0px rgba(34, 60, 80, 0.2);
+  -moz-box-shadow: 0px 4px 8px 0px rgba(34, 60, 80, 0.2);
+  box-shadow: 0px 4px 8px 0px rgba(34, 60, 80, 0.2);
+}

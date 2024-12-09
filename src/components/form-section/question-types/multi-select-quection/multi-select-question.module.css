@@ -1,0 +1,23 @@
+.wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 24px;
+}
+
+.container {
+  -webkit-box-shadow: 0px 4px 8px 0px rgba(34, 60, 80, 0.2);
+  -moz-box-shadow: 0px 4px 8px 0px rgba(34, 60, 80, 0.2);
+  box-shadow: 0px 4px 8px 0px rgba(34, 60, 80, 0.2);
+  width: 100%;
+  max-width: 900px;
+  background: #4096ff;
+  border-radius: 12px;
+}
+
+.optionsContainer {
+  padding: 16px 32px 24px;
+  background: #fff;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}

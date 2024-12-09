@@ -1,0 +1,23 @@
+.container {
+  background: #e6f4ff;
+  display: flex;
+  justify-content: center;
+  padding: 20px 0 40px;
+}
+
+.submit {
+  width: 100%;
+  max-width: 900px;
+  background: #4096ff;
+  border-radius: 12px;
+  border: none;
+  font-size: 28px;
+  font-weight: 600;
+  padding: 12px 0;
+  color: #fff;
+  transition: 0.3s ease-in-out;
+}
+
+.submit:hover {
+  opacity: .75;
+}

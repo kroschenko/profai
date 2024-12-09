@@ -1,0 +1,42 @@
+.container {
+  padding: 40px 16px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #4096ff;
+}
+
+.title {
+  color: #fff;
+}
+
+.text {
+  color: #fff;
+}
+
+.qualitiesName {
+  color: #4096ff;
+  font-weight: 600;
+}
+
+.qualitiesDesc {
+  color: #323232;
+}
+
+.qualitiesScore {
+  width: 100%;
+  text-align: right;
+  color: #323232;
+  font-weight: 600;
+}
+
+.footer {
+  padding: 12px 0;
+  margin-top: 30px;
+  max-width: 900px;
+  width: 100%;
+  border-top: 1px solid #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
