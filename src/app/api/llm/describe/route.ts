@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
-import ollama from 'ollama';
+import OpenAI from "openai";
 import { MODEL } from '../config';
+
+const openai = new OpenAI();
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -30,7 +32,7 @@ ${text}
 Ответ в формате одного абзаца, начинающегося с "Результаты обусловлены тем, что" и далее идет твой ответ. Ответ должен быть адресован пользователю, обращайся на Вы. 
 `;
 
-    const response = await ollama.chat({
+    const response = await openai.chat.completions.create({
       model: MODEL,
       messages: [
         { role: 'system', content: systemPrompt },
@@ -38,7 +40,7 @@ ${text}
       ],
     });
 
-    return NextResponse.json({ response: response.message.content });
+    return  NextResponse.json({ response: response.choices[0].message.content });
   } catch (error) {
     console.error('Error:', error);
     return NextResponse.json({ error: 'Failed to generate response' }, { status: 500 });

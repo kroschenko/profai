@@ -2,7 +2,7 @@
 
 import styles from "./form-section.module.css";
 import { Form, notification } from "antd";
-import { Question, questions, QuestionType } from "@/core/questions";
+import { questions } from "@/core/questions";
 import { useEffect, useState } from "react";
 import { SelectQuestion } from "./question-types/select-question/select-question";
 import { MultiSelectQuestion } from "./question-types/multi-select-quection/multi-select-question";
@@ -16,14 +16,8 @@ import {
   setDescription,
   setFaculties,
 } from "@/store/reducers/result";
-import { faculties, students } from "@/core/students";
-
-const cosineDistance = (a: number[], b: number[]): number => {
-  const dotProd = a.reduce((acc, val, i) => acc + val * b[i], 0);
-  const magnitudeA = Math.sqrt(a.reduce((acc, val) => acc + val * val, 0));
-  const magnitudeB = Math.sqrt(b.reduce((acc, val) => acc + val * val, 0));
-  return 1 - dotProd / (magnitudeA * magnitudeB);
-};
+import { faculties } from "@/core/students";
+import { Question, QuestionType } from "@/core/types";
 
 interface GetQuestionItemProps {
   question: Question;
@@ -85,12 +79,25 @@ export const FormSection = ({}: FormSectionProps) => {
   const [answers, setAnswers] = useState<string[][]>(
     Array.from({ length: questions.length }, () => [])
   );
+  const [shuffle, setShuffle] = useState<number[]>([]);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     const formStateJson = localStorage.getItem("formState");
     if (formStateJson) {
       setAnswers(JSON.parse(formStateJson));
+    }
+    const shuffleJson = localStorage.getItem("shuffle");
+    console.log(shuffleJson);
+    if (shuffleJson) {
+      setShuffle(JSON.parse(shuffleJson));
+    } else {
+      const newShuffle = Array.from(
+        { length: questions.length },
+        (_, i) => i
+      ).sort(() => Math.random() - 0.5);
+      localStorage.setItem("shuffle", JSON.stringify(newShuffle));
+      setShuffle(newShuffle);
     }
   }, []);
 
@@ -123,6 +130,8 @@ export const FormSection = ({}: FormSectionProps) => {
     });
     console.log("Подождите, подготовка результатов.");
     const test = getAnswers(answers);
+    console.log(answers);
+    console.log(test);
     console.log("test", test.description, test.vector);
     dispatch(setTest(test));
     const resText2vec = await fetch(
@@ -132,31 +141,17 @@ export const FormSection = ({}: FormSectionProps) => {
     console.log("ai", ai);
     const final = [];
     for (let i = 0; i < test.vector.length; i++) {
-      const d = (test.vector[i] - ai[i]) / 3.33
-      const t = test.vector[i] - d
+      const d = (test.vector[i] - ai[i]) / 3.33;
+      const t = test.vector[i] - d;
       final.push(Math.max(0, Math.min(1, t)));
     }
     console.log("final", final);
     dispatch(setChart({ test: test.vector, ai, final }));
     api.info({ message: "Хмм, интересно. Взгляните на график.", duration: 5 });
-    const dists = [];
-    const amount = Array.from({ length: faculties.length }, () => 0);
-    for (let i = 0; i < students.length; i++) {
-      const faculty = students[i][1];
-      amount[students[i][1]]++;
-      const vec = students[i][0];
-      const dist = cosineDistance(vec, final);
-      dists.push({ faculty, dist });
-    }
-    let scores = Array.from({ length: faculties.length }, (_, i) => ({
+    const scores = Array.from({ length: faculties.length }, (_, i) => ({
       name: faculties[i],
-      score: 0,
-    }));
-    for (let i = 0; i < dists.length; i++) {
-      scores[dists[i].faculty].score +=
-        dists[i].dist / amount[dists[i].faculty];
-    }
-    scores = scores.sort((a, b) => b.score - a.score);
+      score: test.facultiesScores[i],
+    })).sort((a, b) => b.score - a.score);
     console.log("faculties", scores);
     dispatch(setFaculties(scores));
     const top = scores[0].name;
@@ -174,19 +169,22 @@ export const FormSection = ({}: FormSectionProps) => {
     });
   };
 
+  const shuffledQuestions = shuffle.map((i) => {
+    const q = questions[i];
+    return getQuestionItem({
+      question: q,
+      key: i + "",
+      value: answers[i],
+      setValue: (v) => setValueWithIndex(v, i),
+      saveValue: (v) => saveValueWithIndex(v, i),
+    });
+  });
+
   return (
     <section className={styles.container}>
       {contextHolder}
       <Form className={styles.wrapper} onFinish={onSubmit}>
-        {questions.map((q, i) =>
-          getQuestionItem({
-            question: q,
-            key: i + "",
-            value: answers[i],
-            setValue: (v) => setValueWithIndex(v, i),
-            saveValue: (v) => saveValueWithIndex(v, i),
-          })
-        )}
+        {shuffledQuestions}
         <button
           style={isDisabled ? { display: "none" } : {}}
           className={styles.submit}

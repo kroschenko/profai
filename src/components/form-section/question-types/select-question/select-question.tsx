@@ -32,7 +32,7 @@ export const SelectQuestion = ({
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <Typography.Title
-          style={{ marginLeft: 32, fontSize: "24px", color: "#fff" }}
+          style={{ margin: "16px 32px 12px", fontSize: "24px", color: "#fff" }}
           level={1}
         >
           {text}

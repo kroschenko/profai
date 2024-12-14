@@ -1,1 +1,1 @@
-export const MODEL = "qwen2.5:3b"
+export const MODEL = "gpt-4o-mini"
