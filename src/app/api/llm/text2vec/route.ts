@@ -3,7 +3,7 @@ import {NextResponse} from 'next/server';
 import OpenAI from "openai";
 import {MODEL} from '../config';
 
-const openai = new OpenAI();
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 
 const isResultValid = (vec: number[]) => {
     return !vec.some((n) => Number.isNaN(n)) && vec.length == qualities.length;

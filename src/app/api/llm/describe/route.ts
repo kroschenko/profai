@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import OpenAI from "openai";
 import { MODEL } from '../config';
 
-const openai = new OpenAI();
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
